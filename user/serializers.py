@@ -12,3 +12,8 @@ class UserLoginSerializers(serializers.Serializer):
 
     def create(self, validated_data):
         return User.objects.create(**validated_data)
+
+
+class UserSignupSerializers(serializers.Serializer):
+    userId = serializers.CharField(max_length=100)
+    userPw = serializers.CharField(max_length=100)

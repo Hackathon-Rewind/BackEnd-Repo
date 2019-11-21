@@ -120,3 +120,5 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+JWT_SECRET_KEY = 'wdfkn3lj2nkruh23uirhi2u3hfi7ytd78ach^&%T&^%D&*W^*d23u'
