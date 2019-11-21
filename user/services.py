@@ -65,7 +65,7 @@ class JWTService(object):
         filter_user = User.objects.get(
             userId=payload['id']
         )
-        return filter_user.userId
+        return filter_user.userId, filter_user.userInfo
 
 
 class ImageHandler(object):

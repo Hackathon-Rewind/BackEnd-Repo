@@ -13,6 +13,7 @@ class Missing(models.Model):
     missArea = models.CharField(max_length=100)
     physicalPoint = models.CharField(max_length=100)
     additional = models.CharField(max_length=100, blank=True)
+    binary = models.TextField(default='DEFAULT VALUE')
 
     def __str__(self):
         return self.name
