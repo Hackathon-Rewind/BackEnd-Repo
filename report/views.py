@@ -20,6 +20,8 @@ from missing.exception import (
     InappropriateJwt
 )
 
+from .models import Report
+
 from .serializers import ReportPostSerializers
 
 
@@ -45,3 +47,20 @@ def report_endpoint(request):
             return Response(payload, status=status.HTTP_200_OK)
 
         return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@csrf_exempt
+@api_view(['GET'])
+def report_list_endpoint(request):
+    if request.method == 'GET':
+        return_dict = {}
+        count = 0
+
+        for i in Report.objects.all().order_by('-id').values():
+            return_dict[count] = i
+            count += 1
+
+        print(count)
+
+        print(return_dict)
+        return Response(return_dict, status=status.HTTP_200_OK)

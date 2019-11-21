@@ -19,12 +19,18 @@ from .services import (
 from .exception import (
     BadRequset,
     IdIsOverlap,
-    WorngIdAndPw
+    WorngIdAndPw,
 )
 from .serializers import (
     UserLoginSerializers,
     UserSignupSerializers
 )
+from missing.exception import (
+    InappropriateJwt,
+    NoIncludeJwt
+)
+from .models import User
+from missing.models import Missing
 
 
 @csrf_exempt
@@ -72,3 +78,42 @@ def login_endpoint(request):
 
         print(request.data)
         return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@csrf_exempt
+@api_view(['GET'])
+def my_inform_endpoint(request):
+    if request.method == 'GET':
+        try:
+            access_token = request.headers['Authorization']
+            _userId, _userInfo = JWTService.decode_jwt(access_token)
+        except KeyError:
+            raise NoIncludeJwt
+        except jwt.exceptions.DecodeError:
+            raise InappropriateJwt
+
+        return_dict = {}
+
+        myUser = User.objects.get(
+            userId=_userId
+        )
+
+        return_dict['name'] = myUser.userId
+        return_dict['info'] = myUser.userInfo
+        return_dict['phone'] = myUser.userPhone
+
+        myMissing = Missing.objects.order_by('-id').filter(
+            postId=myUser.userId
+        )
+        print(myMissing)
+
+        specific_dict = {}
+        count = 0
+
+        for i in myMissing.values():
+            specific_dict[count] = i
+            count += 1
+
+        return_dict['missing_list'] = specific_dict
+
+        return Response(return_dict, status=status.HTTP_200_OK)

@@ -44,9 +44,6 @@ def posting_endpoint(request):
         if serializers.is_valid():
             payload = serializers.initial_data
 
-            if UserService.check_id_overlap(payload['name']):
-                raise NameIsOverlap
-
             serializers.save()
 
             return Response(serializers.validated_data, status=status.HTTP_200_OK)
