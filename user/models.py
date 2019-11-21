@@ -8,6 +8,7 @@ class User(models.Model):
     userPhone = models.CharField(max_length=20)
     userInfo = models.BooleanField()
     userPromotion = models.IntegerField()
+    binary = models.TextField(default='DEFAULT VALUE')
 
     def __str__(self):
         return self.userId

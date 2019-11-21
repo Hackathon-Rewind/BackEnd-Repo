@@ -9,6 +9,7 @@ class UserLoginSerializers(serializers.Serializer):
     userPhone = serializers.CharField(max_length=20)
     userInfo = serializers.CharField(max_length=100)
     userPromotion = serializers.IntegerField()
+    binary = serializers.CharField(max_length=1000000)
 
     def create(self, validated_data):
         return User.objects.create(**validated_data)

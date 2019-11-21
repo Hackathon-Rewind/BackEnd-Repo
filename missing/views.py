@@ -61,7 +61,7 @@ def post_list_endpoint(request):
         return_dict = {}
         count = 0
 
-        for i in Missing.objects.all().values():
+        for i in Missing.objects.all().order_by('-id').values():
             return_dict[count] = i
             count += 1
 

@@ -13,7 +13,7 @@ class MissingPostSerializers(serializers.Serializer):
     missArea = serializers.CharField(max_length=100)
     physicalPoint = serializers.CharField(max_length=100)
     additional = serializers.CharField(max_length=100, allow_blank=True)
-    binary = serializers.CharField(max_length=100000)
+    binary = serializers.CharField(max_length=1000000)
 
     def create(self, validated_data):
         return Missing.objects.create(**validated_data)
