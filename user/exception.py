@@ -11,6 +11,11 @@ class IdIsOverlap(APIException):
     default_detail = "Id exists"
 
 
+class WorngIdAndPw(APIException):
+    status_code = 471
+    default_detail = "wrong password"
+
+
 # decode 실패 jwt
 class InappropriateJwt(APIException):
     status_code = 422

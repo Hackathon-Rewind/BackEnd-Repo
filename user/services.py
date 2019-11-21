@@ -1,5 +1,6 @@
 import bcrypt
 import jwt
+import base64
 from datetime import datetime, timedelta
 
 from .models import User
@@ -59,16 +60,18 @@ class JWTService(object):
 
     # jwt decoding
     @staticmethod
-    def decode_jwt(authorization):
-        payload = jwt.decode(authorization, JWT_SECRET_KEY, algorithms=['HS256'])
+    def decode_jwt(token):
+        payload = jwt.decode(token, JWT_SECRET_KEY, algorithms=['HS256'])
         filter_user = User.objects.get(
             userId=payload['id']
         )
-        return {'userId': filter_user.userId, 'userName': filter_user.userName}
+        return filter_user.userId
 
 
 class ImageHandler(object):
 
     # 사진 올리기
     @staticmethod
-    def upload_photo(user_id, base64):
+    def upload_photo(user_id, my_base64):
+        with open(f"Data/User/{user_id}.png", "wb") as f:
+            f.write(base64.decodebytes(my_base64))
