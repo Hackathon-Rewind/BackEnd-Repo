@@ -16,7 +16,7 @@ class OneWayHash(object):
         return bcrypt.hashpw(_userPw.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
 
 
-class UserServie(object):
+class UserService(object):
     # 아이디 중복 체크 확인
     @staticmethod
     def check_id_overlap(id):
@@ -29,7 +29,6 @@ class UserServie(object):
             return False
 
         return True
-
 
     # 아이디 비밀번호 일치 확인
     @staticmethod
@@ -52,7 +51,7 @@ class JWTService(object):
     def create_jwt(payload):
         data = {
             'id': payload['userId'],
-            'exp': datetime.utcnow() + timedelta(seconds=60*60*2)
+            'exp': datetime.utcnow() + timedelta(seconds=60*60*24)
         }
         encoded_jwt = jwt.encode(data, JWT_SECRET_KEY, algorithm='HS256')
 
@@ -66,3 +65,10 @@ class JWTService(object):
             userId=payload['id']
         )
         return {'userId': filter_user.userId, 'userName': filter_user.userName}
+
+
+class ImageHandler(object):
+
+    # 사진 올리기
+    @staticmethod
+    def upload_photo(user_id, base64):

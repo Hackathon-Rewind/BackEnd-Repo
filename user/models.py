@@ -6,7 +6,7 @@ class User(models.Model):
     userPw = models.CharField(max_length=100)
     userName = models.CharField(max_length=100)
     userPhone = models.CharField(max_length=20)
-    userInfo = models.CharField(max_length=100)
+    userInfo = models.BooleanField()
     userPromotion = models.IntegerField()
 
     def __str__(self):
