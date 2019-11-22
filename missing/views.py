@@ -95,8 +95,7 @@ def promotion_endpoint(request, pk):
         myUser = User.objects.get(
             userId=_userId
         )
-        print(myUser.userId)
-        print(myUser.userPromotion)
+
         myUser.userPromotion += 1
         myUser.save()
 
@@ -113,7 +112,7 @@ def promotion_list_endpoint(request):
         count = 0
 
         for i in User.objects.all().order_by('-userPromotion').values():
-            if i["userPromotion"] <= 0:
+            if i["userPromotion"] <= 0 or i["userInfo"] is not True:
                 continue
             return_dict[count] = i
             count += 1

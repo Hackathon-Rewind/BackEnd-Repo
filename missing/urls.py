@@ -13,5 +13,5 @@ urlpatterns = [
     path("list/", post_list_endpoint),
     path("list/<int:pk>/", post_list_detail_endpoint),
     path("promotion/<int:pk>/", promotion_endpoint),
-    path("promotion/list/", promotion_list_endpoint),
+    path("promotion/", promotion_list_endpoint),
 ]
