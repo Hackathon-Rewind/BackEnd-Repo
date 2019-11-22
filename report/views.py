@@ -60,7 +60,4 @@ def report_list_endpoint(request):
             return_dict[count] = i
             count += 1
 
-        print(count)
-
-        print(return_dict)
         return Response(return_dict, status=status.HTTP_200_OK)

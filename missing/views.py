@@ -1,6 +1,6 @@
 import jwt
 
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.core import exceptions
 from django.forms.models import model_to_dict
 from rest_framework.views import APIView
@@ -24,6 +24,7 @@ from .exception import (
 )
 from .models import Missing
 
+from user.models import User
 
 @csrf_exempt
 @api_view(['POST'])
@@ -77,3 +78,44 @@ def post_list_detail_endpoint(request, pk):
             return Response(return_dict[0], status=status.HTTP_200_OK)
         except:
             return Response("no exists primary key", status=status.HTTP_400_BAD_REQUEST)
+
+
+@csrf_exempt
+@api_view(['POST'])
+def promotion_endpoint(request, pk):
+    if request.method == 'POST':
+        try:
+            access_token = request.headers['Authorization']
+            _userId, _userInfo = JWTService.decode_jwt(access_token)
+        except KeyError:
+            raise NoIncludeJwt
+        except jwt.exceptions.DecodeError:
+            raise InappropriateJwt
+
+        myUser = User.objects.get(
+            userId=_userId
+        )
+        print(myUser.userId)
+        print(myUser.userPromotion)
+        myUser.userPromotion += 1
+        myUser.save()
+
+        myProm = get_object_or_404(Missing, pk=pk)
+
+        return Response(status=status.HTTP_200_OK)
+
+
+@csrf_exempt
+@api_view(['GET'])
+def promotion_list_endpoint(request):
+    if request.method == 'GET':
+        return_dict = {}
+        count = 0
+
+        for i in User.objects.all().order_by('-userPromotion').values():
+            if i["userPromotion"] <= 0:
+                continue
+            return_dict[count] = i
+            count += 1
+
+        return Response(return_dict, status=status.HTTP_200_OK)

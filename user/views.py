@@ -105,7 +105,6 @@ def my_inform_endpoint(request):
         myMissing = Missing.objects.order_by('-id').filter(
             postId=myUser.userId
         )
-        print(myMissing)
 
         specific_dict = {}
         count = 0
